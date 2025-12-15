@@ -1,0 +1,31 @@
+<section class="dashboard">
+  <h1 class="app-section-title">Dashboard</h1>
+  <p class="app-section-subtitle">
+    Use the floating action button to pick a log file and start parsing it. Charts will update automatically once data
+    is available.
+  </p>
+
+  <section aria-label="Log distribution charts" class="dashboard__doughnut-grid app-card">
+    <app-log-kind-doughnut-chart [summary]="summary()"></app-log-kind-doughnut-chart>
+    <app-log-level-doughnut-chart [summary]="levelSummary()"></app-log-level-doughnut-chart>
+    <app-log-environment-doughnut-chart [summary]="environmentSummary()"></app-log-environment-doughnut-chart>
+  </section>
+
+  <section aria-label="Error and fatal events timeline" class="dashboard__timeline app-card">
+    <app-error-fatal-timeline-chart [summary]="errorFatalTimelineSummary()"></app-error-fatal-timeline-chart>
+  </section>
+
+  <section aria-label="Error and fatal log details" class="dashboard__log-details app-card">
+    <app-log-level-tables [errorEntries]="errorEntries()" [fatalEntries]="fatalEntries()"></app-log-level-tables>
+  </section>
+
+  <button
+    (click)="openFileDialog()"
+    aria-label="Select log file to analyse"
+    class="dashboard-fab"
+    mat-fab
+    type="button"
+  >
+    <span aria-hidden="true" class="material-icons">upload_file</span>
+  </button>
+</section>

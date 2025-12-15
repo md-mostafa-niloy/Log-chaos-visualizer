@@ -1,0 +1,142 @@
+<app-search-input
+  (openHelp)="onOpenHelp()"
+  [isSearching]="isSearching()"
+  ariaLabel="Search through log entries"
+  placeholder="Search logs... (press Enter to search)"
+></app-search-input>
+
+@if (isSearching()) {
+  <mat-progress-bar aria-label="Searching logs" class="search-progress-bar" mode="indeterminate"></mat-progress-bar>
+}
+
+<div aria-label="Parsed log entries table" class="mat-elevation-z8 analyse-table" role="table">
+  <div class="table-header" role="rowgroup">
+    <div class="table-header-row" role="row">
+      <div class="col kind" role="columnheader">Kind</div>
+      <div class="col environment" role="columnheader">Environment</div>
+      <div class="col timestamp" role="columnheader">Timestamp</div>
+      <div class="col level" role="columnheader">Level</div>
+      <div class="col source" role="columnheader">Source</div>
+      <div class="col message" role="columnheader">Message</div>
+    </div>
+  </div>
+  <div aria-live="polite" class="table-toolbar">
+    <span class="count">
+      Showing {{ paginatedEntries().length }} of {{ entries().length }} entries
+      @if (lastSearchDurationMs() !== null && lastSearchResultCount() !== null) {
+        <span class="search-meta">
+          &mdash; last search: {{ lastSearchResultCount() }} results in
+          {{ lastSearchDurationMs() | number: '1.0-0' }} ms
+        </span>
+      }
+    </span>
+  </div>
+  @defer {
+    <cdk-virtual-scroll-viewport
+      [itemSize]="itemSize()"
+      [maxBufferPx]="maxBufferPx"
+      [minBufferPx]="minBufferPx"
+      aria-label="Log entries viewport"
+      class="viewport"
+      role="rowgroup"
+    >
+      @for (row of paginatedEntries(); track $index) {
+        @let env = row.normalized.environment;
+        @let level = row.normalized.level;
+        <div
+          (click)="selectEntry(row, $index)"
+          (keydown.enter)="selectEntry(row, $index)"
+          (keydown.space)="selectEntry(row, $index); $event.preventDefault()"
+          [attr.aria-controls]="selectedIndex() === $index ? 'detail-' + $index : null"
+          [attr.aria-selected]="selectedIndex() === $index"
+          [attr.data-index]="$index"
+          [class.env-dev]="env === 'dev'"
+          [class.env-prod]="env === 'prod'"
+          [class.env-staging]="env === 'staging'"
+          [class.level-error]="level === 'error' || level === 'fatal'"
+          [class.level-warn]="level === 'warn'"
+          class="table-row"
+          id="row-{{ $index }}"
+          role="row"
+          tabindex="0"
+        >
+          <div [title]="row.kind" class="col kind" role="cell">
+            <span class="kind-badge">{{ row.kind }}</span>
+          </div>
+          <div [title]="'Environment: ' + env" class="col environment" role="cell">
+            <span [class]="'env-' + env" class="env-badge">
+              {{ env }}
+            </span>
+          </div>
+          <div [title]="formatTimestamp(row)" class="col timestamp" role="cell">
+            {{ formatTimestamp(row) }}
+          </div>
+          <div [title]="'Level: ' + level" class="col level" role="cell">
+            <span [class]="'level-' + level" class="level-badge">
+              {{ level }}
+            </span>
+          </div>
+          <div [title]="formatSource(row)" class="col source" role="cell">
+            {{ formatSource(row) }}
+          </div>
+          <div [title]="formatMessage(row)" class="col message" role="cell">
+            {{ formatMessage(row) }}
+          </div>
+        </div>
+
+        @if (selectedIndex() === $index) {
+          <div
+            [attr.data-index]="$index"
+            aria-labelledby="row-{{ $index }}"
+            class="table-row-detail"
+            id="detail-{{ $index }}"
+            role="region"
+          >
+            <app-analyse-detail-view
+              (closed)="clearSelection()"
+              [entry]="selectedEntry()"
+              [expanded]="true"
+            ></app-analyse-detail-view>
+          </div>
+        }
+      }
+
+      @if (shouldShowEmpty()) {
+        <div class="no-data" role="row">
+          <div class="mat-cell" role="cell">No data matching the filter "{{ query() }}"</div>
+        </div>
+      }
+    </cdk-virtual-scroll-viewport>
+  } @placeholder (minimum 330ms) {
+    <div aria-label="Loading log entries" class="loading-state">
+      @for (i of [1, 2, 3, 4, 5]; track i) {
+        <div class="skeleton-row">
+          <div class="skeleton-cell skeleton-kind"></div>
+          <div class="skeleton-cell skeleton-environment"></div>
+          <div class="skeleton-cell skeleton-timestamp"></div>
+          <div class="skeleton-cell skeleton-level"></div>
+          <div class="skeleton-cell skeleton-source"></div>
+          <div class="skeleton-cell skeleton-message"></div>
+        </div>
+      }
+      <div class="loading-indicator">
+        <mat-progress-spinner
+          aria-label="Loading log entries"
+          diameter="24"
+          mode="indeterminate"
+        ></mat-progress-spinner>
+        <span class="loading-text">Loading log entries...</span>
+      </div>
+    </div>
+  }
+
+  <mat-paginator
+    (page)="handlePageEvent($event)"
+    [length]="entries().length"
+    [pageSizeOptions]="pageSizeOptions"
+    [pageSize]="paginatedEntries().length"
+    [showFirstLastButtons]="showFirstLastButtons"
+    aria-label="Select page of log entries"
+    class="mat-paginator"
+  ></mat-paginator>
+</div>

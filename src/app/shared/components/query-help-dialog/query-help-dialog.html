@@ -1,0 +1,251 @@
+<div class="query-help-dialog">
+  <header class="dialog-header" role="banner">
+    <div class="header-left">
+      <h2 id="query-help-dialog-title">Query Syntax Reference</h2>
+      <p class="muted">Quick reference and one‑click examples</p>
+    </div>
+
+    <div class="header-actions">
+      <div aria-label="Insert mode" class="insert-mode" role="tablist">
+        <button
+          (click)="setMergeMode('replace')"
+          [attr.aria-pressed]="mergeMode() === 'replace'"
+          class="seg-btn"
+          mat-button
+          type="button"
+        >
+          Replace
+        </button>
+        <button
+          (click)="setMergeMode('append-space')"
+          [attr.aria-pressed]="mergeMode() === 'append-space'"
+          class="seg-btn"
+          mat-button
+          type="button"
+        >
+          Append
+        </button>
+        <button
+          (click)="setMergeMode('append-and')"
+          [attr.aria-pressed]="mergeMode() === 'append-and'"
+          class="seg-btn"
+          mat-button
+          type="button"
+        >
+          Append AND
+        </button>
+      </div>
+
+      <button (click)="close()" aria-label="Close dialog" aria-labelledby="query-help-dialog-title" mat-icon-button>
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </header>
+
+  <mat-dialog-content aria-labelledby="query-help-dialog-title">
+    <div class="dialog-body">
+      <aside aria-label="Quick filters and examples" class="sidebar" role="complementary">
+        <div class="sidebar-scroll">
+          @for (section of exampleSections; track section.title) {
+            <section class="sidebar-section">
+              <h4>{{ section.title }}</h4>
+              <p class="description">{{ section.items[0]?.description }}</p>
+            </section>
+          }
+        </div>
+      </aside>
+
+      <main class="main" role="main">
+        <mat-tab-group>
+          <mat-tab label="Reference">
+            <div class="tab-content">
+              <h3 class="intro">Query language quick reference</h3>
+              <p>
+                Use the left column for quick examples. This reference contains field/operation descriptions and
+                advanced patterns.
+              </p>
+
+              <div class="examples-list">
+                @for (item of referenceExamples; track item.query) {
+                  <app-query-example-item
+                    (copyRequested)="copyExample(item.query)"
+                    (insertRequested)="insertExample(item.query)"
+                    [description]="item.description"
+                    [query]="item.query"
+                  ></app-query-example-item>
+                }
+              </div>
+            </div>
+          </mat-tab>
+
+          <mat-tab label="Operators">
+            <div class="tab-content">
+              <!-- Operators content kept unchanged but simplified visually -->
+              <h3>Comparison Operators</h3>
+              <table class="operators-table">
+                <thead>
+                  <tr>
+                    <th>Operator</th>
+                    <th>Description</th>
+                    <th>Example</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>=</code></td>
+                    <td>Equal to</td>
+                    <td><code>level=error</code></td>
+                  </tr>
+                  <tr>
+                    <td><code>!=</code></td>
+                    <td>Not equal to</td>
+                    <td><code>level!=debug</code></td>
+                  </tr>
+                  <tr>
+                    <td><code>&gt;</code></td>
+                    <td>Greater than</td>
+                    <td><code>statusCode&gt;500</code></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h3 class="examples-heading">Examples</h3>
+              <div class="examples-list">
+                @for (item of operatorsExamples; track item.query) {
+                  <app-query-example-item
+                    (copyRequested)="copyExample(item.query)"
+                    (insertRequested)="insertExample(item.query)"
+                    [description]="item.description"
+                    [query]="item.query"
+                  ></app-query-example-item>
+                }
+              </div>
+
+              <h3>Boolean Operators</h3>
+              <table class="operators-table">
+                <thead>
+                  <tr>
+                    <th>Operator</th>
+                    <th>Description</th>
+                    <th>Example</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>AND</code></td>
+                    <td>Both conditions must be true</td>
+                    <td><code>level=error AND environment=prod</code></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </mat-tab>
+
+          <mat-tab label="Functions">
+            <div class="tab-content">
+              <h3>String Functions</h3>
+              <div class="function-group">
+                <h4>contains(text)</h4>
+                <p>Check if a field contains the specified text (case-insensitive).</p>
+                <div class="examples">
+                  <code>contains(message, "timeout")</code>
+                  <code>contains(message, "connection error")</code>
+                  <code>contains(hostname, "api")</code>
+                </div>
+              </div>
+
+              <h3 class="examples-heading">Examples</h3>
+              <div class="examples-list">
+                @for (item of functionsExamples; track item.query) {
+                  <app-query-example-item
+                    (copyRequested)="copyExample(item.query)"
+                    (insertRequested)="insertExample(item.query)"
+                    [description]="item.description"
+                    [query]="item.query"
+                  ></app-query-example-item>
+                }
+              </div>
+            </div>
+          </mat-tab>
+
+          <mat-tab label="Available Fields">
+            <div class="tab-content">
+              <h3>Common Fields (All Formats)</h3>
+              <table class="fields-table">
+                <thead>
+                  <tr>
+                    <th>Field</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>level</code></td>
+                    <td>string</td>
+                    <td>Log level (trace, debug, info, warn, error, fatal, unknown)</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h3 class="examples-heading">Examples</h3>
+              <div class="examples-list">
+                @for (item of fieldsExamples; track item.query) {
+                  <app-query-example-item
+                    (copyRequested)="copyExample(item.query)"
+                    (insertRequested)="insertExample(item.query)"
+                    [description]="item.description"
+                    [query]="item.query"
+                  ></app-query-example-item>
+                }
+              </div>
+            </div>
+          </mat-tab>
+
+          <mat-tab label="Regex Guide">
+            <div class="tab-content">
+              <h3>Regular Expression Patterns</h3>
+              <p>Use regex patterns with the <code>matches()</code> function for advanced text matching.</p>
+
+              <h3 class="examples-heading">Examples</h3>
+              <div class="examples-list">
+                @for (item of regexExamples; track item.query) {
+                  <app-query-example-item
+                    (copyRequested)="copyExample(item.query)"
+                    (insertRequested)="insertExample(item.query)"
+                    [description]="item.description"
+                    [query]="item.query"
+                  ></app-query-example-item>
+                }
+              </div>
+            </div>
+          </mat-tab>
+
+          <mat-tab label="Performance">
+            <div class="tab-content">
+              <h3>Query Optimization Tips</h3>
+
+              <h3 class="examples-heading">Examples</h3>
+              <div class="examples-list">
+                @for (item of performanceExamples; track item.query) {
+                  <app-query-example-item
+                    (copyRequested)="copyExample(item.query)"
+                    (insertRequested)="insertExample(item.query)"
+                    [description]="item.description"
+                    [query]="item.query"
+                  ></app-query-example-item>
+                }
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </main>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button (click)="close()" mat-button>Close</button>
+  </mat-dialog-actions>
+
+  <div aria-live="polite" class="visually-hidden" role="status">{{ liveAnnouncement() }}</div>
+</div>

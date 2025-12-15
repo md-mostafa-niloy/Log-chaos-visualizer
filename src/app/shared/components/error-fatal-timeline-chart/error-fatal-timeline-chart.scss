@@ -1,0 +1,43 @@
+.error-fatal-timeline-chart {
+  display: block;
+}
+
+.error-fatal-timeline-chart__container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.error-fatal-timeline-chart__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.error-fatal-timeline-chart__title {
+  margin: 0;
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  font-weight: 500;
+}
+
+.error-fatal-timeline-chart__meta {
+  margin: 0;
+  font-size: var(--font-size-meta);
+  line-height: var(--line-height-meta);
+  color: var(--color-text-muted);
+}
+
+.error-fatal-timeline-chart__chart {
+  position: relative;
+  width: 100%;
+  min-height: 220px;
+}
+
+.error-fatal-timeline-chart__placeholder {
+  margin: 0;
+  font-size: var(--font-size-meta);
+  line-height: var(--line-height-meta);
+  color: var(--color-text-muted);
+  font-style: italic;
+}

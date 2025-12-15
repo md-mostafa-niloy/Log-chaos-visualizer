@@ -1,0 +1,33 @@
+.dashboard {
+  position: relative;
+  padding-bottom: var(--space-3);
+
+  .dashboard__timeline {
+    margin-top: var(--space-3);
+  }
+
+  .dashboard__doughnut-grid {
+    margin-top: var(--space-3);
+    display: grid;
+    gap: var(--space-3);
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+
+  .dashboard__placeholder {
+    margin-top: var(--space-3);
+    font-size: var(--font-size-body);
+    font-style: italic;
+    color: var(--color-text-muted);
+  }
+
+  .dashboard__log-details {
+    margin-top: var(--space-3);
+  }
+}
+
+.dashboard-fab {
+  position: fixed;
+  right: var(--space-4);
+  bottom: var(--space-4);
+  z-index: 10;
+}

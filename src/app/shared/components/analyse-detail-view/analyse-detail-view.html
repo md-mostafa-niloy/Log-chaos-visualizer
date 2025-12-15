@@ -1,0 +1,66 @@
+@let e = entry();
+@if (e) {
+  <article [attr.aria-labelledby]="headingId()" class="detail-container" role="region" tabindex="-1">
+    <header class="detail-header">
+      <div class="summary-left">
+        <h3 [id]="headingId()" class="summary-title">
+          <span class="message" title="{{ messageText() || 'No message' }}">
+            {{ (messageText() || 'No message').slice(0, 200) }}{{ (messageText() || '').length > 200 ? '\u2026' : '' }}
+          </span>
+          <div class="meta-small">
+            <span class="ts" title="{{ formattedTimestamp() }}">{{ formattedTimestamp() || '—' }}</span>
+            <span aria-hidden="true" class="divider">\u2022</span>
+            <span class="kind">{{ e.kind || '—' }}</span>
+          </div>
+        </h3>
+      </div>
+    </header>
+
+    <section aria-label="Log details" class="detail-grid">
+      <div class="panel panel-main">
+        <dl>
+          <dt>Message</dt>
+          <dd>{{ messageText() || '—' }}</dd>
+
+          <dt>Timestamp</dt>
+          <dd>{{ formattedTimestamp() || '—' }}</dd>
+
+          <dt>Level</dt>
+          <dd>{{ e.normalized?.level || '—' }}</dd>
+
+          <dt>Environment</dt>
+          <dd>{{ e.normalized?.environment || '—' }}</dd>
+
+          <dt>Source</dt>
+          <dd>{{ e.normalized?.kind || '—' }}</dd>
+
+          @for (entry of detailEntries(); track entry.key) {
+            <dt>{{ entry.key | titlecase }}</dt>
+            <dd>
+              @if (entry.subEntries) {
+                <ul>
+                  @for (subEntry of entry.subEntries; track subEntry.key) {
+                    <li>
+                      <strong>{{ subEntry.key }}:</strong>
+                      @if (subEntry.value && typeof subEntry.value === 'object') {
+                        {{ subEntry.value | json }}
+                      } @else {
+                        {{ subEntry.value || '—' }}
+                      }
+                    </li>
+                  }
+                </ul>
+              } @else {
+                @if (entry.value && typeof entry.value === 'object') {
+                  {{ entry.value | json }}
+                } @else {
+                  {{ entry.value || '—' }}
+                }
+              }
+            </dd>
+          }
+        </dl>
+      </div>
+    </section>
+  </article>
+}

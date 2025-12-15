@@ -1,0 +1,246 @@
+/* Basic styling for the inline detail panel, with accessible focus and contrast */
+.detail-container {
+  background: var(--color-surface-high, #ffffff);
+  border-radius: var(--radius-md, 8px);
+  padding: var(--space-4, 12px);
+  margin: var(--space-2, 8px) 0 var(--space-3, 12px) 0;
+  box-shadow: 0 6px 20px rgba(17, 24, 39, 0.06);
+  outline: none;
+  display: block;
+  border: 1px solid var(--color-border-soft, rgba(15, 23, 42, 0.04));
+}
+
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3, 12px);
+  align-items: flex-start;
+  margin-bottom: var(--space-2, 10px);
+}
+
+.summary-left {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 8px);
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.summary-title .message {
+  font-weight: 600;
+  color: var(--color-text-primary, #0f172a);
+  white-space: normal;
+  overflow-wrap: anywhere;
+  font-size: var(--font-size-md, 14px);
+  line-height: 1.25;
+}
+
+.meta-small {
+  color: var(--color-text-secondary, #6b7280);
+  font-size: var(--font-size-sm, 13px);
+  display: flex;
+  gap: var(--space-2, 8px);
+  align-items: center;
+}
+
+.summary-chips {
+  display: flex;
+  gap: var(--space-2, 8px);
+  margin-top: var(--space-1, 6px);
+  align-items: center;
+}
+
+/* Material chip overrides to align with project theme tokens */
+.mat-chip-list {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.mat-chip {
+  height: 28px;
+  font-size: 12px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: transparent;
+}
+
+.mat-chip.level {
+  background: var(--color-accent-soft, #e0c0ff);
+  color: var(--color-text-primary, #0f172a);
+}
+
+.mat-chip.env {
+  background: var(--color-primary-soft, #64dfdf);
+  color: var(--color-text-primary, #0f172a);
+}
+
+.mat-chip.source {
+  background: var(--color-surface-low, #f4e6ff);
+  color: var(--color-text-primary, #0f172a);
+}
+
+.summary-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Inline stack toggle replaces previous action buttons */
+.stack-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1, 6px);
+  cursor: pointer;
+  border-radius: var(--radius-sm, 6px);
+  padding: var(--space-1, 6px) var(--space-2, 8px);
+  background: transparent;
+  color: var(--color-text-primary, #0f172a);
+  outline: none;
+  transition:
+    background-color 120ms,
+    box-shadow 120ms;
+}
+
+.stack-toggle mat-icon {
+  font-size: 18px;
+  color: var(--color-text-secondary, #6b7280);
+  transition: transform 160ms ease;
+}
+
+.stack-toggle[aria-expanded='true'] mat-icon {
+  transform: rotate(180deg);
+}
+
+.stack-toggle:focus-visible {
+  box-shadow: 0 0 0 2px var(--focus-ring, #5390d9);
+  background: var(--color-surface-low, #f4e6ff);
+}
+
+.stack-toggle-label {
+  font-size: var(--font-size-sm, 13px);
+}
+
+/* Grid layout for detail panel sections */
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3, 12px);
+}
+
+@media (min-width: 600px) {
+  .detail-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.panel-main {
+  grid-column: 1 / -1;
+}
+
+.panel {
+  background: transparent;
+  padding: 8px 0;
+}
+
+.panel-title {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: #0f172a;
+}
+
+.meta-list {
+  display: grid;
+  gap: 6px 12px;
+}
+
+.meta-row {
+  display: flex;
+  gap: 12px;
+}
+
+.meta-key {
+  min-width: 120px;
+  color: #374151;
+  font-weight: 600;
+}
+
+.meta-value {
+  color: #111827;
+  word-break: break-word;
+}
+
+.http {
+  font-size: 13px;
+  color: #0f172a;
+  display: grid;
+  gap: 6px;
+}
+
+.tags-wrap {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  background: #f3f4f6;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.stack-preview,
+.stack-full,
+.raw-json {
+  background: var(--color-surface-low, #f4e6ff);
+  color: var(--color-text-primary, #0f172a);
+  border-radius: var(--radius-sm, 6px);
+  padding: var(--space-2, 8px);
+  font-size: var(--font-size-sm, 13px);
+  margin-top: var(--space-1, 6px);
+  white-space: pre-line;
+  overflow-x: auto;
+  outline: none;
+}
+
+.panel-stack .panel-toolbar,
+.panel .panel-toolbar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.detail-empty {
+  color: var(--color-text-secondary, #6b7280);
+  text-align: center;
+  padding: var(--space-4, 12px);
+}
+
+@media (max-width: 920px) {
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+  .summary-actions {
+    flex-wrap: wrap;
+  }
+}
+
+/* Small visual tweaks for better contrast and compactness */
+.panel-title {
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.meta-key {
+  font-size: 13px;
+}
+
+.meta-value {
+  font-size: 13px;
+}
+
+/* ensure code block has enough contrast and focusability */
+.raw-json:focus {
+  outline: 2px solid rgba(99, 102, 241, 0.2);
+}

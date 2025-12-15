@@ -1,0 +1,45 @@
+:host {
+  display: block;
+}
+
+.file-select-dialog {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.file-select-dialog__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.file-select-dialog__title {
+  font-size: var(--font-size-title);
+  line-height: var(--line-height-title);
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.file-select-dialog__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  color: var(--color-text-secondary);
+}
+
+.file-select-dialog__description {
+  margin: 0;
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+}
+
+.file-select-dialog__selector {
+  // The FileSelector drop zone is the main visual element here.
+}
+
+.file-select-dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}

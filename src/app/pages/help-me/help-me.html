@@ -1,0 +1,284 @@
+<section class="help-page">
+  <div class="page-header">
+    <h1 class="app-section-title">Query Syntax Help</h1>
+  </div>
+
+  <!-- Quick Start Section -->
+  <section aria-labelledby="quick-start-heading" class="app-card">
+    <h2 id="quick-start-heading">Quick Start</h2>
+    <p>
+      Log Chaos Visualizer supports a powerful query language for filtering and searching logs. You can use
+      field-specific searches, boolean operators, and regular expressions to find exactly what you need.
+    </p>
+
+    <div class="quick-filters">
+      <h3>Quick Filters</h3>
+      <p>
+        The toolbar includes Quick Filters for common tasks (Errors, Production, 5xx, Web hosts). Clicking a quick
+        filter inserts the corresponding field expression into the query bar. You can use them alone or combine them
+        with typed queries.
+      </p>
+      <div class="quick-examples">
+        <div class="example">
+          <code>level=error</code>
+          <p>Quick Filter: "Errors" — shows only error-level logs</p>
+        </div>
+        <div class="example">
+          <code>environment=prod</code>
+          <p>Quick Filter: "Production" — filter logs from production</p>
+        </div>
+        <div class="example">
+          <code>statusCode&gt;=500</code>
+          <p>Quick Filter: "5xx" — server error status codes</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="quick-examples">
+      <div class="example">
+        <code>level=error</code>
+        <p>Find all error logs</p>
+      </div>
+      <div class="example">
+        <code>contains(message, "timeout")</code>
+        <p>Search for "timeout" in messages</p>
+      </div>
+      <div class="example">
+        <code>level=error AND environment=prod</code>
+        <p>Production errors only</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Operators Section -->
+  <section aria-labelledby="operators-heading" class="app-card">
+    <h2 id="operators-heading">Operators</h2>
+
+    <h3>Comparison Operators</h3>
+    <div class="operator-list">
+      <div class="operator-item">
+        <code>=</code>
+        <span>Equal to (e.g., <code>level=error</code>)</span>
+      </div>
+      <div class="operator-item">
+        <code>!=</code>
+        <span>Not equal to (e.g., <code>level!=debug</code>)</span>
+      </div>
+      <div class="operator-item">
+        <code>&gt;</code>
+        <span>Greater than (e.g., <code>statusCode&gt;500</code>)</span>
+      </div>
+      <div class="operator-item">
+        <code>&gt;=</code>
+        <span>Greater than or equal (e.g., <code>statusCode&gt;=400</code>)</span>
+      </div>
+      <div class="operator-item">
+        <code>&lt;</code>
+        <span>Less than (e.g., <code>statusCode&lt;400</code>)</span>
+      </div>
+      <div class="operator-item">
+        <code>&lt;=</code>
+        <span>Less than or equal (e.g., <code>statusCode&lt;=299</code>)</span>
+      </div>
+    </div>
+
+    <h3>Boolean Operators</h3>
+    <div class="operator-list">
+      <div class="operator-item">
+        <code>AND</code>
+        <span>Both conditions must be true</span>
+      </div>
+      <div class="operator-item">
+        <code>OR</code>
+        <span>Either condition can be true</span>
+      </div>
+      <div class="operator-item">
+        <code>NOT</code>
+        <span>Negates the condition</span>
+      </div>
+      <div class="operator-item">
+        <code>( )</code>
+        <span>Group expressions for complex logic</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Functions Section -->
+  <section aria-labelledby="functions-heading" class="app-card">
+    <h2 id="functions-heading">String Functions</h2>
+
+    <div class="function-list">
+      <div class="function-item">
+        <h3>contains(text)</h3>
+        <p>Check if a field contains the specified text (case-insensitive).</p>
+        <code>contains(message, "api")</code>
+        <code>contains(message, "connection error")</code>
+      </div>
+
+      <div class="function-item">
+        <h3>startsWith(text)</h3>
+        <p>Check if a field starts with the specified text.</p>
+        <code>startsWith(hostname, "web")</code>
+        <code>startsWith(url, "/api")</code>
+      </div>
+
+      <div class="function-item">
+        <h3>endsWith(text)</h3>
+        <p>Check if a field ends with the specified text.</p>
+        <code>endsWith(message, "failed")</code>
+        <code>endsWith(url, ".json")</code>
+      </div>
+
+      <div class="function-item">
+        <h3>matches(regex)</h3>
+        <p>Match a field against a regular expression pattern.</p>
+        <code>matches(message, /timeout/i)</code>
+        <code>matches(message, /\d{{ '{' }}3{{ '}' }}\s+error/)</code>
+        <code>contains(message, /api|database|connection/)</code>
+      </div>
+    </div>
+  </section>
+
+  <!-- Common Fields Section -->
+  <section aria-labelledby="fields-heading" class="app-card">
+    <h2 id="fields-heading">Common Fields</h2>
+    <p>These fields are available in all log formats:</p>
+
+    <div class="field-list">
+      <div class="field-item"><strong>level</strong> - Log level (trace, debug, info, warn, error, fatal, unknown)</div>
+      <div class="field-item"><strong>message</strong> - Log message text</div>
+      <div class="field-item"><strong>timestamp</strong> - Log timestamp (supports date comparisons)</div>
+      <div class="field-item"><strong>environment</strong> - Environment (dev, staging, prod, unknown)</div>
+      <div class="field-item">
+        <strong>kind</strong> - Log format type (pino, winston, loki, docker, promtail, text)
+      </div>
+    </div>
+
+    <p class="info-note info-callout">
+      <mat-icon>info</mat-icon>
+      Additional fields are available depending on your log format. Click "Open Full Reference" above to see all
+      available fields for Pino, Winston, Loki, Docker, and Promtail logs.
+    </p>
+  </section>
+
+  <!-- Examples Section -->
+  <section aria-labelledby="examples-heading" class="app-card">
+    <h2 id="examples-heading">Common Examples</h2>
+
+    <div class="examples-grid">
+      <div class="example-card">
+        <h3>Find Errors</h3>
+        <code>level=error</code>
+        <code>level=error AND environment=prod</code>
+        <code>contains(message, "exception")</code>
+      </div>
+
+      <div class="example-card">
+        <h3>API Issues</h3>
+        <code>contains(message, "api") AND level=error</code>
+        <code>statusCode&gt;=500</code>
+        <code>matches(message, /api.*timeout/i)</code>
+      </div>
+
+      <div class="example-card">
+        <h3>Time Ranges</h3>
+        <code>timestamp&gt;="2024-12-01"</code>
+        <code>timestamp&gt;="2024-12-01" AND timestamp&lt;"2024-12-07"</code>
+      </div>
+
+      <div class="example-card">
+        <h3>Complex Filters</h3>
+        <code>(level=error OR level=fatal) AND contains(message, /database|connection/)</code>
+        <code>level=warn AND contains(message, "retry") AND NOT contains(message, "success")</code>
+      </div>
+
+      <div class="example-card">
+        <h3>HTTP Requests</h3>
+        <code>(statusCode&gt;=500 OR statusCode=404) AND method=GET</code>
+        <code>statusCode&gt;=400 AND url.startsWith("/api")</code>
+      </div>
+
+      <div class="example-card">
+        <h3>Service-Specific</h3>
+        <code>startsWith(hostname, "web") AND level!=debug</code>
+        <code>contains(hostname, "api") AND matches(message, /timeout/i)</code>
+      </div>
+    </div>
+  </section>
+
+  <!-- Performance Tips Section -->
+  <section aria-labelledby="performance-heading" class="app-card">
+    <h2 id="performance-heading">Performance Tips</h2>
+
+    <div class="tips-list">
+      <div class="tip-item tip-callout">
+        <h3>1. Use indexed fields first</h3>
+        <p>
+          Queries on <code class="code-inline">level</code> and <code class="code-inline">environment</code> are
+          fastest. Start with these when possible.
+        </p>
+        <div class="tip-example">
+          <span class="good">✓ Good:</span>
+          <code class="code-inline">level=error AND contains(message, "api")</code>
+        </div>
+      </div>
+
+      <div class="tip-item tip-callout">
+        <h3>2. Narrow before regex</h3>
+        <p>Filter with simpler conditions before using regex patterns.</p>
+        <div class="tip-example">
+          <span class="good">✓ Good:</span>
+          <code class="code-inline">level=error AND matches(message, /timeout/i)</code>
+        </div>
+      </div>
+
+      <div class="tip-item tip-callout">
+        <h3>3. Use simple functions when possible</h3>
+        <p>
+          <code class="code-inline">contains()</code>, <code class="code-inline">startsWith()</code>, and
+          <code class="code-inline">endsWith()</code> are faster than regex.
+        </p>
+        <div class="tip-example">
+          <span class="good">✓ Good:</span>
+          <code class="code-inline">contains(message, "timeout")</code>
+        </div>
+        <div class="tip-example">
+          <span class="slower">⚠ Slower:</span>
+          <code class="code-inline">matches(message, /timeout/)</code>
+        </div>
+      </div>
+
+      <div class="tip-item tip-callout">
+        <h3>4. Quote multi-word strings</h3>
+        <p>Use quotes for phrases to ensure proper parsing.</p>
+        <div class="tip-example">
+          <span class="good">✓ Good:</span>
+          <code class="code-inline">contains(message, "connection timeout")</code>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Legacy Search Section -->
+  <section aria-labelledby="legacy-heading" class="app-card">
+    <h2 id="legacy-heading">Legacy Text Search</h2>
+    <p>
+      Simple text without operators automatically falls back to full-text search for backward compatibility. This is
+      useful for quick searches without specific field filtering.
+    </p>
+    <div class="legacy-examples">
+      <code>simple text search</code>
+      <code>"phrase search"</code>
+      <code>multiple words</code>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <p>For complete documentation including regex patterns, all available fields by log format, and more examples:</p>
+    <button (click)="openQueryHelp()" color="primary" mat-raised-button>
+      <mat-icon>help</mat-icon>
+      Open Query Reference
+    </button>
+  </section>
+</section>

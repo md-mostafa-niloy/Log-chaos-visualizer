@@ -1,0 +1,58 @@
+<div class="search-input-wrapper">
+  <div [class.has-error]="!isValid() && hasValue()" class="search-input-container">
+    <input
+      (input)="onInput($event)"
+      (keydown)="onKeyDown($event)"
+      [attr.aria-invalid]="!isValid() && hasValue()"
+      [attr.aria-label]="ariaLabel()"
+      [placeholder]="placeholder()"
+      [value]="query()"
+      aria-describedby="search-input-help"
+      class="search-input"
+      type="text"
+    />
+
+    <div class="search-input-suffix">
+      @if (isSearching()) {
+        <mat-progress-spinner
+          aria-label="Searching"
+          class="search-spinner"
+          diameter="18"
+          mode="indeterminate"
+        ></mat-progress-spinner>
+      } @else if (hasValue()) {
+        <button
+          (click)="onClear()"
+          aria-label="Clear search"
+          class="search-clear-button"
+          title="Clear search"
+          type="button"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+      <button
+        (click)="onHelpClick()"
+        aria-label="Query syntax help"
+        class="search-help-button"
+        matTooltip="Query syntax help"
+        type="button"
+      >
+        <mat-icon>help_outline</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  @if (!isValid() && hasValue()) {
+    <div class="search-error-message" role="alert">
+      @for (error of validationErrors(); track $index) {
+        <div>{{ error }}</div>
+      }
+    </div>
+  }
+
+  <div class="sr-only" id="search-input-help">
+    Type to search logs. Use structured queries like "level=error" or simple text search. Press Enter to submit. Click
+    the help button for syntax guide.
+  </div>
+</div>

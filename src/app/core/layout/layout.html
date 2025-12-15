@@ -1,0 +1,20 @@
+<app-global-progress></app-global-progress>
+<app-header (menuToggle)="toggleSidenav()" />
+
+<mat-sidenav-container aria-label="App content" class="sidenav-container" role="region">
+  <mat-sidenav
+    [attr.aria-label]="'Primary navigation'"
+    [mode]="isMobile() ? 'over' : 'side'"
+    [opened]="isSidenavOpen()"
+    class="sidenav"
+    id="app-sidenav"
+  >
+    <app-navigation />
+  </mat-sidenav>
+
+  <mat-sidenav-content class="content">
+    <main class="page app-page" role="main">
+      <router-outlet />
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
